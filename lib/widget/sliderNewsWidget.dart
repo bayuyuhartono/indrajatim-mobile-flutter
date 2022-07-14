@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:indrajatim/model/news.dart';
 import 'package:indrajatim/screens/detailNewsScreen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
 
 class SliderNewsWidget extends StatelessWidget {
   SliderNewsWidget(this.listNews);
@@ -46,80 +48,105 @@ class SliderNewsWidget extends StatelessWidget {
       String kategori) {
     return InkWell(
       child: Container(
-        width: MediaQuery.of(context).size.width / 1.5,
-        height: MediaQuery.of(context).size.width / 1.7,
-        decoration: BoxDecoration(
-            image:
-                DecorationImage(image: NetworkImage(gambar), fit: BoxFit.cover),
-            borderRadius: BorderRadius.all(Radius.circular(15))),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  margin: EdgeInsets.all(15),
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
+          width: MediaQuery.of(context).size.width / 1.5,
+          height: MediaQuery.of(context).size.width / 1.7,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+          ),
+          child: Stack(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 1.5,
+                height: MediaQuery.of(context).size.width / 1.7,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  child: CachedNetworkImage(
+                    imageUrl: gambar,
+                    fit: BoxFit.cover,
+                    placeholder: (BuildContext context, String val) {
+                      return Shimmer.fromColors(
+                        baseColor: Colors.grey[50],
+                        highlightColor: Colors.grey[200],
+                        child: Container(
+                          width: MediaQuery.of(context).size.width / 1.5,
+                          height: MediaQuery.of(context).size.width / 1.7,
+                          color: Colors.white,
+                        ),
+                      );
+                    },
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(
-                        kategori,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                      Container(
+                        margin: EdgeInsets.all(15),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              kategori,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                ),
-              ],
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 0, right: 15, bottom: 15, top: 15),
-              padding: EdgeInsets.all(9),
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.7),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(0),
-                  bottomLeft: Radius.circular(0),
-                  topRight: Radius.circular(15),
-                  bottomRight: Radius.circular(15),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    judul,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: 0, right: 15, bottom: 15, top: 15),
+                    padding: EdgeInsets.all(9),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.7),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(0),
+                        bottomLeft: Radius.circular(0),
+                        topRight: Radius.circular(15),
+                        bottomRight: Radius.circular(15),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          judul,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          )),
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) => DetailNewsScreen(slug, gambar, judul)),
+          MaterialPageRoute(builder: (context) => DetailNewsScreen(slug)),
         );
       },
     );

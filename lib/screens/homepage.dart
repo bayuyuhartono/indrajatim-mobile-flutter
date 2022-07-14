@@ -52,61 +52,69 @@ class _HomePageScreenState extends State<HomePageScreen>
           width: MediaQuery.of(context).size.width / 2,
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.only(top: 0, left: 30, right: 30, bottom: 0),
+      body: SizedBox(
         child: NestedScrollView(
           headerSliverBuilder: (context, value) {
             return [
               SliverToBoxAdapter(
+                  child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30),
                 child: Column(
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // SizedBox(height: 3),
-                        // Text(
-                        //   "Terbaru",
-                        //   style: TextStyle(
-                        //     fontSize: 20,
-                        //     fontWeight: FontWeight.bold,
-                        //   ),
-                        // ),
                         SizedBox(height: 15),
                         SliderNewsWidget(listNews),
-                        SizedBox(height: 15),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          child: SizedBox(
-                            child: TabBar(
-                              physics: BouncingScrollPhysics(),
-                              isScrollable: true,
-                              controller: _tabController,
-                              labelColor: Colors.white,
-                              unselectedLabelColor: Colors.black,
-                              indicator: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: Colors.black),
-                              tabs: [
-                                for (int i = 0;
-                                    i < categoryNews.length;
-                                    i++) ...[
-                                  SizedBox(
-                                    height: 30,
-                                    child: Tab(
-                                      text: categoryNews[i]
-                                          .toString()
-                                          .toUpperCase(),
-                                    ),
-                                  ),
-                                ],
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 15),
                       ],
                     ),
                   ],
+                ),
+              )),
+              SliverAppBar(
+                elevation: 0,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                floating: true,
+                pinned: true,
+                toolbarHeight: 60,
+                expandedHeight: 60,
+                collapsedHeight: 60,
+                flexibleSpace: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 15),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: SizedBox(
+                          child: TabBar(
+                            indicatorWeight: 0,
+                            physics: BouncingScrollPhysics(),
+                            isScrollable: true,
+                            controller: _tabController,
+                            labelColor: Colors.white,
+                            unselectedLabelColor: Colors.black,
+                            indicator: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.black),
+                            tabs: [
+                              for (int i = 0; i < categoryNews.length; i++) ...[
+                                SizedBox(
+                                  height: 30,
+                                  child: Tab(
+                                    text: categoryNews[i]
+                                        .toString()
+                                        .toUpperCase(),
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                    ],
+                  ),
                 ),
               ),
             ];
@@ -117,7 +125,10 @@ class _HomePageScreenState extends State<HomePageScreen>
               controller: _tabController,
               children: [
                 for (int i = 0; i < categoryNews.length; i++) ...[
-                  ListNewsWidget(listNews[i]),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    child: ListNewsWidget(listNews[i]),
+                  ),
                 ]
               ],
             ),

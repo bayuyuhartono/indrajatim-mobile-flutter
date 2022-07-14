@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, use_key_in_widget_constructors, must_be_immutable, file_names
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:indrajatim/model/news.dart';
 import 'package:indrajatim/screens/detailNewsScreen.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ListNewsWidget extends StatelessWidget {
   ListNewsWidget(this.listNews);
@@ -80,12 +82,22 @@ class ListNewsWidget extends StatelessWidget {
                         height: 100,
                         width: 100,
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(7),
-                          child: Image.network(
-                            news.gambar,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                            borderRadius: BorderRadius.circular(7),
+                            child: CachedNetworkImage(
+                              imageUrl: news.gambar,
+                              fit: BoxFit.cover,
+                              placeholder: (BuildContext context, String val) {
+                                return Shimmer.fromColors(
+                                  baseColor: Colors.grey[50],
+                                  highlightColor: Colors.grey[200],
+                                  child: Container(
+                                    height: 100,
+                                    width: 100,
+                                    color: Colors.white,
+                                  ),
+                                );
+                              },
+                            )),
                       ),
                     ],
                   ),
@@ -96,8 +108,7 @@ class ListNewsWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        DetailNewsScreen(news.slug, news.gambar, news.judul)),
+                    builder: (context) => DetailNewsScreen(news.slug)),
               );
             },
           ),
